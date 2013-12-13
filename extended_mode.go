@@ -155,6 +155,12 @@ func (e extended_mode) on_key(ev *termbox.Event) {
 		case '!':
 			g.set_overlay_mode(init_line_edit_mode(g, g.filter_region_lemp()))
 			return
+		case 'h':
+			v := g.active.leaf
+			c := cursor_location{v.buf.last_line, v.buf.lines_n, len(v.buf.last_line.data)}
+			v.buf.mark = c
+			c = cursor_location{v.buf.first_line, 1, 0}
+			v.move_cursor_to(c)
 		default:
 			goto undefined
 		}
