@@ -682,6 +682,24 @@ func (v *view) move_cursor_word_forward() {
 	}
 }
 
+func (v *view) move_cursor_to_rune_backward(r rune) {
+	c := v.cursor
+	ok := c.move_to_rune_backward(r)
+	v.move_cursor_to(c)
+	if !ok {
+		v.ctx.set_status("Not find")
+	}
+}
+
+func (v *view) move_cursor_to_rune_forward(r rune) {
+	c := v.cursor
+	ok := c.move_to_rune_forward(r)
+	v.move_cursor_to(c)
+	if !ok {
+		v.ctx.set_status("Not find")
+	}
+}
+
 func (v *view) move_cursor_word_backward() {
 	c := v.cursor
 	ok := c.move_one_word_backward()
@@ -1113,6 +1131,10 @@ func (v *view) on_vcommand(cmd vcommand, arg rune) {
 		v.swap_cursor_and_mark()
 	case vcommand_insert_rune:
 		v.insert_rune(arg)
+	case vcommand_move_cursor_to_rune_forward:
+		v.move_cursor_to_rune_forward(arg)
+	case  vcommand_move_cursor_to_rune_backward:
+		v.move_cursor_to_rune_backward(arg)
 	case vcommand_yank:
 		v.yank()
 	case vcommand_delete_rune_backward:
@@ -1813,6 +1835,8 @@ const (
 	vcommand_move_cursor_backward
 	vcommand_move_cursor_word_forward
 	vcommand_move_cursor_word_backward
+	vcommand_move_cursor_to_rune_forward
+	vcommand_move_cursor_to_rune_backward
 	vcommand_move_cursor_next_line
 	vcommand_move_cursor_prev_line
 	vcommand_move_cursor_beginning_of_line

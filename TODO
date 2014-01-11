@@ -1,0 +1,3 @@
+* 将vcommand整理出来，做一套opcode
+* 添加snippet系统
+* 利用go的ast做跳转 goto define

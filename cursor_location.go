@@ -260,6 +260,44 @@ func (c *cursor_location) move_one_word_backward() bool {
 	return true
 }
 
+func (c *cursor_location) move_to_rune_backward(rn rune) bool {
+	// move cursor forward until it meet a rune r of fail
+	if (c.bol()) {
+		return false
+	}
+	r, rlen := c.rune_under()
+	c.boffset -= rlen
+
+	for !c.bol() {
+		r, rlen = c.rune_under()
+		if rn == r {
+			return true
+		}		
+		c.boffset -= rlen
+	}
+
+	return false
+}
+
+func (c *cursor_location) move_to_rune_forward(rn rune) bool {
+	// move cursor forward until it meet a rune r of fail
+	if c.eol() {
+		return false
+	}
+	r, rlen := c.rune_under()
+	c.boffset += rlen
+
+	for !c.eol() {
+		r, rlen = c.rune_under()
+		if rn == r {
+			return true
+		}		
+		c.boffset += rlen
+	}
+
+	return false
+}
+
 func (c *cursor_location) on_insert_adjust(a *action) {
 	if a.cursor.line_num > c.line_num {
 		return
